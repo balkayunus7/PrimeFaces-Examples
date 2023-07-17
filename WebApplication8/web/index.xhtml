@@ -1,0 +1,377 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+<h:body>  
+    // TEXT SAVING
+    <div class="card">
+<h2>Ajax Event Example</h2>  
+<h:form>  
+<h:panelGrid columns="3" cellpadding="5">  
+<h:outputText value="KeyUp Event: " />  
+<p:inputText id="firstname" value="#{basicView.name}" placeholder="Enter Text">  
+<p:ajax event="keyup" update="out" />  
+</p:inputText>  
+<h:outputText id="out" value="#{basicView.name}" />  
+</h:panelGrid>  
+</h:form>
+ </div>
+
+    // ACTION LİSTENER WITH COUNTER 
+
+<div class="card">
+<h2>ActionListener Example</h2>  
+<h:form>  
+<h:panelGrid columns="2" cellpadding="5">  
+<h:outputText value="Counter: " />  
+<h:outputText id="output" value="#{actionListener.counter}" />  
+</h:panelGrid><br/>  
+<p:commandButton value="Count" actionListener="#{actionListener.increment()}" update="output" />
+</h:form>
+</div>    
+    
+    // NAME AND SURNAME SAVING
+    
+    
+<div class="card">
+<h:form>  
+<p:panel id="panel-id" header="Add a User">  
+<p:messages id="msgs" />  
+<h:panelGrid columns="3" cellpadding="5">  
+<p:outputLabel for="firstname" value="Firstname:" />  
+<p:inputText id="firstname" value="#{ajaxValidation.firstname}" required="true" label="Firstname">  
+<f:validateLength minimum="2" />  
+</p:inputText>  
+<p:message for="firstname" display="icon" />  
+<p:outputLabel for="lastname" value="Lastname:" />  
+<p:inputText id="lastname" value="#{ajaxValidation.lastname}" label="Lastname" required="true">  
+<f:validateLength minimum="2" />  
+<p:ajax update="msgLastname" event="keyup" />  
+</p:inputText>  
+<p:message for="lastname" id="msgLastname" display="icon" />  
+</h:panelGrid>  
+<p:commandButton value="Save" update="panel-id" actionListener="#{ajaxValidation.save}" icon="ui-icon-check" />  
+</p:panel>  
+</h:form>    
+</div>
+   
+    // DROPDOWN WITH COUNTRISE AND CITIES EXAMPLE
+<div class="card">    
+    
+<h:form>  
+<p:growl id="msgs" showDetail="true" />  
+<p:panel header="Provide Your Address" style="margin-bottom:10px;">  
+<h:panelGrid columns="2" cellpadding="5">  
+<p:outputLabel for="country" value="Country: " />  
+<p:selectOneMenu id="country" value="#{dropdown.country}" style="width:150px">  
+<p:ajax listener="#{dropdown.onCountryChange}" update="city" />  
+<f:selectItem itemLabel="Select Country" itemValue="" noSelectionOption="true" />  
+<f:selectItems value="#{dropdown.countries}" />  
+</p:selectOneMenu>  
+<p:outputLabel for="city" value="City: " />  
+<p:selectOneMenu id="city" value="#{dropdown.city}" style="width:150px">  
+<f:selectItem itemLabel="Select City" itemValue="" noSelectionOption="true" />  
+<f:selectItems value="#{dropdown.cities}" />  
+</p:selectOneMenu>  
+</h:panelGrid>  
+<p:separator />  
+<p:commandButton value="Submit" update="msgs" actionListener="#{dropdown.displayLocation}" icon="ui-icon-check" />  
+</p:panel>  
+</h:form>      
+</div>
+    
+    
+    
+<div class="card">
+    <h:form>
+        <h:panelGrid id="grid" cellpadding="7" columns="2" styleClass="mb-3">
+            <p:outputLabel for="firstname" value="Firstname:"/>
+            <p:inputText id="firstname" value="#{processView.firstname}"/>
+
+            <p:outputLabel for="middle" value="Middle:"/>
+            <p:inputText id="middle" value="#{processView.middlename}"/>
+
+            <p:outputLabel for="surname" value="Surname:"/>
+            <p:inputText id="surname" value="#{processView.lastname}" required="true"
+                         requiredMessage="Surname is required"/>
+        </h:panelGrid>
+        <p:commandButton value="All" id="btnAll" process="@all" update="grid msgs" action="#{processView.save}" styleClass="mr-2"/>
+        <p:commandButton value="Form" id="btnForm" process="@form" update="grid msgs" action="#{processView.save}" styleClass="mr-2"/>
+        <p:commandButton value="This" id="btnThis" process="@this" update="grid msgs" action="#{processView.save}" styleClass="mr-2" resetValues="true" />
+        <p:commandButton value="None" id="btnNone" process="@none" update="grid msgs" action="#{processView.save}" styleClass="mr-2" resetValues="true" />
+        <p:commandButton value="Parent" id="btnParent" process="@parent" update="grid msgs" action="#{processView.save}" styleClass="mr-2"/>
+        <p:commandButton value="This Surname" id="btnSurname" process="@this,surname" update="grid msgs" action="#{processView.save}"/>
+
+        <p:messages id="msgs"/>
+    </h:form>
+</div>
+    
+<div class="card">
+    <h:form>
+        <p:growl id="messages" showDetail="true"/>
+
+        <p:tree id="docs" value="#{treeContextMenuView.root}" var="doc" selectionMode="single"
+                selection="#{treeContextMenuView.selectedNode}" dynamic="true">
+            <p:treeNode expandedIcon="pi pi-folder-open" collapsedIcon="pi pi-folder">
+                <h:outputText value="#{doc.name}"/>
+            </p:treeNode>
+            <p:treeNode type="app" icon="pi pi-save">
+                <h:outputText value="#{doc.name}"/>
+            </p:treeNode>
+            <p:treeNode type="document" icon="pi pi-file">
+                <h:outputText value="#{doc.name}"/>
+            </p:treeNode>
+            <p:treeNode type="excel" icon="pi pi-file-excel">
+                <h:outputText value="#{doc.name}"/>
+            </p:treeNode>
+            <p:treeNode type="travel" icon="pi pi-file-pdf">
+                <h:outputText value="#{doc.name}"/>
+            </p:treeNode>
+            <p:treeNode type="picture" icon="pi pi-image">
+                <h:outputText value="#{doc.name}"/>
+            </p:treeNode>
+            <p:treeNode type="video" icon="pi pi-video">
+                <h:outputText value="#{doc.name}"/>
+            </p:treeNode>
+        </p:tree>
+
+        <p:contextMenu for="docs">
+            <p:menuitem value="View" update="messages" action="#{treeContextMenuView.displaySelectedSingle}"
+                        icon="pi pi-search"/>
+            <p:menuitem value="Delete" update="docs" action="#{treeContextMenuView.deleteNode}"
+                        icon="pi pi-times"/>
+        </p:contextMenu>
+    </h:form>
+</div>
+
+    <div class="card">
+    <h:form>
+        <h5>Horizontal</h5>
+        <p:megaMenu  autoDisplay="false">
+            <p:submenu label="Videos" icon="pi pi-fw pi-video">
+                <p:column>
+                    <p:submenu label="Video 1">
+                        <p:menuitem value="Video 1.1"/>
+                        <p:menuitem value="Video 1.2"/>
+                    </p:submenu>
+                    <p:submenu label="Video 2">
+                        <p:menuitem value="Video 2.1"/>
+                        <p:menuitem value="Video 2.2"/>
+                    </p:submenu>
+                </p:column>
+
+                <p:column>
+                    <p:submenu label="Video 3">
+                        <p:menuitem value="Video 3.1"/>
+                        <p:menuitem value="Video 3.2"/>
+                    </p:submenu>
+                    <p:submenu label="Video 4">
+                        <p:menuitem value="Video 4.1"/>
+                        <p:menuitem value="Video 4.2"/>
+                    </p:submenu>
+                </p:column>
+            </p:submenu>
+
+            <p:submenu label="Users" icon="pi pi-fw pi-users">
+
+                <p:column>
+                    <p:submenu label="User 1">
+                        <p:menuitem value="User 1.1"/>
+                        <p:menuitem value="User 1.2"/>
+                    </p:submenu>
+                    <p:submenu label="User 2">
+                        <p:menuitem value="User 2.1"/>
+                        <p:menuitem value="User 2.2"/>
+                    </p:submenu>
+                </p:column>
+
+                <p:column>
+                    <p:submenu label="User 3">
+                        <p:menuitem value="User 3.1"/>
+                        <p:menuitem value="User 3.2"/>
+                    </p:submenu>
+                    <p:submenu label="User 4">
+                        <p:menuitem value="User 4.1"/>
+                        <p:menuitem value="User 4.2"/>
+                    </p:submenu>
+                </p:column>
+                <p:column>
+                    <p:submenu label="User 5">
+                        <p:menuitem value="User 5.1"/>
+                        <p:menuitem value="User 5.2"/>
+                    </p:submenu>
+                    <p:submenu label="User 6">
+                        <p:menuitem value="User 6.1"/>
+                        <p:menuitem value="User 6.2"/>
+                    </p:submenu>
+                </p:column>
+            </p:submenu>
+
+            <p:submenu label="Events" icon="pi pi-fw pi-calendar">
+                <p:column>
+                    <p:submenu label="Event 1">
+                        <p:menuitem value="Event 1.1"/>
+                        <p:menuitem value="Event 1.2"/>
+                    </p:submenu>
+                    <p:submenu label="Event 2">
+                        <p:menuitem value="Event 2.1"/>
+                        <p:menuitem value="Event 2.2"/>
+                    </p:submenu>
+                </p:column>
+
+                <p:column>
+                    <p:submenu label="Event 3">
+                        <p:menuitem value="Event 3.1"/>
+                        <p:menuitem value="Event 3.2"/>
+                    </p:submenu>
+                    <p:submenu label="Event 4">
+                        <p:menuitem value="Event 4.1"/>
+                        <p:menuitem value="Event 4.2"/>
+                    </p:submenu>
+                </p:column>
+            </p:submenu>
+
+            <p:submenu label="Settings" icon="pi pi-fw pi-cog">
+                <p:column>
+                    <p:submenu label="Setting 1">
+                        <p:menuitem value="Setting 1.1"/>
+                        <p:menuitem value="Setting 1.2"/>
+                    </p:submenu>
+                    <p:submenu label="Setting 2">
+                        <p:menuitem value="Setting 2.1"/>
+                        <p:menuitem value="Setting 2.2"/>
+                    </p:submenu>
+                    <p:submenu label="Setting 3">
+                        <p:menuitem value="Setting 3.1"/>
+                        <p:menuitem value="Setting 3.2"/>
+                    </p:submenu>
+                </p:column>
+
+                <p:column>
+                    <p:submenu label="Setting 4">
+                        <p:menuitem value="Setting 4.1"/>
+                        <p:menuitem value="Setting 4.2"/>
+                    </p:submenu>
+                </p:column>
+            </p:submenu>
+        </p:megaMenu>
+
+        <h5>Vertical</h5>
+        <p:megaMenu style="align-content: " autoDisplay="false">
+            <p:submenu label="Videos" icon="pi pi-fw pi-video">
+                <p:column>
+                    <p:submenu label="Video 1">
+                        <p:menuitem value="Video 1.1"/>
+                        <p:menuitem value="Video 1.2"/>
+                    </p:submenu>
+                    <p:submenu label="Video 2">
+                        <p:menuitem value="Video 2.1"/>
+                        <p:menuitem value="Video 2.2"/>
+                    </p:submenu>
+                </p:column>
+
+                <p:column>
+                    <p:submenu label="Video 3">
+                        <p:menuitem value="Video 3.1"/>
+                        <p:menuitem value="Video 3.2"/>
+                    </p:submenu>
+                    <p:submenu label="Video 4">
+                        <p:menuitem value="Video 4.1"/>
+                        <p:menuitem value="Video 4.2"/>
+                    </p:submenu>
+                </p:column>
+            </p:submenu>
+
+            <p:submenu label="Users" icon="pi pi-fw pi-users">
+
+                <p:column>
+                    <p:submenu label="User 1">
+                        <p:menuitem value="User 1.1"/>
+                        <p:menuitem value="User 1.2" url="#"/>
+                    </p:submenu>
+                    <p:submenu label="User 2">
+                        <p:menuitem value="User 2.1" url="#"/>
+                        <p:menuitem value="User 2.2" url="#"/>
+                    </p:submenu>
+                </p:column>
+
+                <p:column>
+                    <p:submenu label="User 3">
+                        <p:menuitem value="User 3.1" url="#"/>
+                        <p:menuitem value="User 3.2" url="#"/>
+                    </p:submenu>
+                    <p:submenu label="User 4">
+                        <p:menuitem value="User 4.1" url="#"/>
+                        <p:menuitem value="User 4.2" url="#"/>
+                    </p:submenu>
+                </p:column>
+                <p:column>
+                    <p:submenu label="User 5">
+                        <p:menuitem value="User 5.1" url="#"/>
+                        <p:menuitem value="User 5.2" url="#"/>
+                    </p:submenu>
+                    <p:submenu label="User 6">
+                        <p:menuitem value="User 6.1" url="#"/>
+                        <p:menuitem value="User 6.2" url="#"/>
+                    </p:submenu>
+                </p:column>
+            </p:submenu>
+
+            <p:submenu label="Events" icon="pi pi-fw pi-calendar">
+                <p:column>
+                    <p:submenu label="Event 1">
+                        <p:menuitem value="Event 1.1" url="#"/>
+                        <p:menuitem value="Event 1.2" url="#"/>
+                    </p:submenu>
+                    <p:submenu label="Event 2">
+                        <p:menuitem value="Event 2.1" url="#"/>
+                        <p:menuitem value="Event 2.2" url="#"/>
+                    </p:submenu>
+                </p:column>
+
+                <p:column>
+                    <p:submenu label="Event 3">
+                        <p:menuitem value="Event 3.1" url="#"/>
+                        <p:menuitem value="Event 3.2" url="#"/>
+                    </p:submenu>
+                    <p:submenu label="Event 4">
+                        <p:menuitem value="Event 4.1" url="#"/>
+                        <p:menuitem value="Event 4.2" url="#"/>
+                    </p:submenu>
+                </p:column>
+            </p:submenu>
+
+            <p:submenu label="Settings" icon="pi pi-fw pi-cog">
+                <p:column>
+                    <p:submenu label="Setting 1">
+                        <p:menuitem value="Setting 1.1" url="#"/>
+                        <p:menuitem value="Setting 1.2" url="#"/>
+                    </p:submenu>
+                    <p:submenu label="Setting 2">
+                        <p:menuitem value="Setting 2.1" url="#"/>
+                        <p:menuitem value="Setting 2.2" url="#"/>
+                    </p:submenu>
+                    <p:submenu label="Setting 3">
+                        <p:menuitem value="Setting 3.1" url="#"/>
+                        <p:menuitem value="Setting 3.2" url="#"/>
+                    </p:submenu>
+                </p:column>
+
+                <p:column>
+                    <p:submenu label="Setting 4">
+                        <p:menuitem value="Setting 4.1" url="#"/>
+                        <p:menuitem value="Setting 4.2" url="#"/>
+                    </p:submenu>
+                </p:column>
+            </p:submenu>
+        </p:megaMenu>
+    </h:form>
+</div>
+   
+</h:body> 
+</html>
